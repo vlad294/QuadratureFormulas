@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace GaussianQF
 {
@@ -15,7 +16,18 @@ namespace GaussianQF
         }
         public static double[] RootsFinding(double[] polynomial, double a, double b, int maxIteration, double tolerance)
         {
+            if(polynomial.Length == 4)
+            {
+                var f = polynomial.Reverse().ToArray();
+                double Q = (f[1] * f[1] - 3 * f[2]) / 9;
+                double R = (2 * f[1] * f[1] * f[1] - 9 * f[1] * f[2] + 27 * f[3]) / 54;
+                double A = Math.Acos(R / Math.Pow(Q * Q * Q, 0.5)) / 3;
 
+                return new double[] {
+                -2 * Math.Pow(Q,0.5) * Math.Cos(A) - f[1]/3,
+                -2 * Math.Pow(Q,0.5) * Math.Cos(A+2.0/3*Math.PI) - f[1] / 3,
+                -2 * Math.Pow(Q,0.5) * Math.Cos(A-2.0/3*Math.PI) - f[1] / 3};
+            }
             var roots = new double[polynomial.Length-1];
 
             int n = 50;

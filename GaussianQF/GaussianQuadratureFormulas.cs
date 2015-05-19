@@ -17,7 +17,7 @@ namespace GaussianQF
         private int parts;
         public delegate double WeightFunction(int k, double a, double b);
         public delegate double[] SystemSolver(double[,] matrix);
-        public delegate double[] PolynomialSolver(double[] poly);
+        public delegate double[] PolynomialSolver(double[] poly, double a, double b);
         public delegate double Function(double x);
         public int Parts { get { return parts; } set {parts = value; } }
         public double H { get; set; }
@@ -93,9 +93,9 @@ namespace GaussianQF
             Array.Resize<double>(ref poly, N + 1);
             poly[N] = 1;
         }
-        private void FindPolynomialRoots()
+        private void FindPolynomialRoots() 
         {
-            nodes = polynomialSolver(poly);
+            nodes = polynomialSolver(poly, left, right);
         }
         private void FindCoefficients()
         {

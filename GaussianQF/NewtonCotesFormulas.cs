@@ -61,6 +61,7 @@ namespace GaussianQF
             double summ = 0;
             for (int i = 0; i < N; i++)
             {
+                var c = function(nodes[i]);
                 summ += coefficients[i] * function(nodes[i]);
             }
             return summ;

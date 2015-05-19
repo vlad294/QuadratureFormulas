@@ -21,8 +21,9 @@ namespace GaussianQF
                 var s2 = qf.CalculateIntegral();
 
                 miOld = mi;
-                qf.Parts = initialPartsCount * L;
-
+                initialPartsCount *= L;
+                qf.Parts = initialPartsCount;
+                var c = (Math.Abs(s0 - s1) / Math.Abs(s1 - s2));
                 mi = Math.Log((Math.Abs(s0 - s1) / Math.Abs(s1 - s2))) / Math.Log(q);
                 Console.Write("{0} ", mi);
             }
