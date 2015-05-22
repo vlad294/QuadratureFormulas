@@ -7,29 +7,26 @@ namespace GaussianQF
 
         static void Main(string[] args)
         {
-            //var summ = Infrastructure.CalculateByDefinition(x => F19(x) * Math.Pow(x - 1.5, -1.0 / 5.0), 1.5, 2.3, 10000);
-            //Console.WriteLine("Интеграл по определению с n={0} равен {1}\n", 10000, summ);
+            var summ = Infrastructure.CalculateByDefinition(x => F15(x) * Math.Pow(x - 1.1, -4.0 / 5.0), 1.1, 2.3, 1000);
+            Console.WriteLine("Интеграл по определению с n={0} равен {1}\n", 10000, summ);
 
-            ////SimpleR();
+            //SimpleR();
 
-            var qf = new GaussianQuadratureFormulas(3, 0, 0.5, QFType.Simple, F8InNewVars, WeightsVariant8, Infrastructure.GaussSolve, (x, left, right) => Poly.RootsFinding(x, left, right, 1000000, 1E-15));
+            var qf = new QuadratureFormulas(3, 0, 1.2, F15InNewVars, WeightsVariant15, QFMethod.Gauss, QFType.Simple);
             Console.WriteLine("Интеграл по КФ Гаусса = {0}\n", qf.CalculateIntegral());
 
-            var qf2 = new NewtonCotesFormulas(3, 0, 0.5, QFType.Simple, F8InNewVars, WeightsVariant8, Infrastructure.GaussSolve);
+            var qf2 = new QuadratureFormulas(3, 0, 1.2, F15InNewVars, WeightsVariant15, QFMethod.NewtonCotes, QFType.Simple);
             Console.WriteLine("Интеграл по КФ Ньютона Котеса = {0}\n", qf2.CalculateIntegral());
 
-
             Console.WriteLine("\nПроцесс Ричардсона для КФ Ньютона-Котеса");
-            IQuadratureFormula qf4 = new NewtonCotesFormulas(3, 0, 0.5, QFType.Complex, F8InNewVars, WeightsVariant8, Infrastructure.GaussSolve, 2);
-            Infrastructure.Richardson(qf4, 2, 2, 1E-6, 6);
+            IQuadratureFormula qf4 = new QuadratureFormulas(3, 0, 1.2, F15InNewVars, WeightsVariant15, QFMethod.NewtonCotes, QFType.Complex, 2);
+            Infrastructure.Richardson(qf4, 2, 2, 1E-10, 6);
 
             Console.WriteLine("\nПроцесс Ричардсона для КФ Гаусса");
 
-            IQuadratureFormula qf3 = new GaussianQuadratureFormulas(3, 0, 0.5, QFType.Complex, F8InNewVars, WeightsVariant8, Infrastructure.GaussSolve, (x, left, right) => Poly.RootsFinding(x, left, right, 1000000, 1E-15), 2);
+            IQuadratureFormula qf3 = new QuadratureFormulas(3, 0, 1.2, F15InNewVars, WeightsVariant15, QFMethod.Gauss, QFType.Complex, 2);
             Infrastructure.Richardson(qf3, 2, 2, 1E-10, 10);
-            //Console.ReadLine();
         }
-
 
         public static double WeightsVariant9(int k, double a, double b)
         {
@@ -62,7 +59,16 @@ namespace GaussianQF
             Func<double, double> weight = t => (1.0 / (k + 2.0 / 5.0)) * Math.Pow(t, k + 2.0 / 5.0);
             return weight(b) - weight(a);
         }
-
+        public static double WeightsVariant5(int k, double a, double b)
+        {
+            Func<double, double> weight = t => (1.0 / (k + 5.0 / 7.0)) * Math.Pow(t, k + 5.0 / 7.0);
+            return weight(b) - weight(a);
+        }
+        public static double WeightsVariant15(int k, double a, double b)
+        {
+            Func<double, double> weight = t => (1.0 / (k + 1.0 / 5.0)) * Math.Pow(t, k + 1.0 / 5.0);
+            return weight(b) - weight(a);
+        }
         public static double F(double x)
         {
             return 3.0 * Math.Cos(1.5 * x) * Math.Exp(x / 4.0) + 4.0 * Math.Sin(3.5 * x) * Math.Exp(-3 * x) + 4 * x;
@@ -85,11 +91,15 @@ namespace GaussianQF
         }
         public static double F5(double x)
         {
-            return Math.Cos(1.5 * x) * Math.Exp(2 * x / 3) + 3 * Math.Sin(5.5 * x) * Math.Exp(-2 * x) + 3 * x;
+            return Math.Cos(1.5 * x) * Math.Exp(2 * x / 3) + 3 * Math.Sin(5.5 * x) * Math.Exp(-2 * x) + 2;
         }
         public static double F8(double x)
         {
             return 3.7 * Math.Cos(1.5 * x) * Math.Exp(-4.0 * x / 3.0) + 2.4 * Math.Sin(4.5 * x) * Math.Exp(2.0 * x / 3.0) + 4;
+        }
+        public static double F15(double x)
+        {
+            return 3.5 * Math.Cos(0.7 * x) * Math.Exp(-5.0 * x / 3.0) + 2.4 * Math.Sin(5.5 * x) * Math.Exp(-3.0 * x / 4.0) + 5;
         }
         public static double F8InNewVars(double t)
         {
@@ -114,6 +124,14 @@ namespace GaussianQF
         public static double F19InNewVars(double t)
         {
             return F19(t + 1.1);
+        }
+        public static double F5InNewVars(double t)
+        {
+            return F5(t + 2.5);
+        }
+        public static double F15InNewVars(double t)
+        {
+            return F15(t + 1.1);
         }
         public static void SimpleR()
         {

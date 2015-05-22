@@ -8,4 +8,14 @@ namespace GaussianQF
         double H { get; set; }
         int N { get; set; }
     }
+    public enum QFType
+    {
+        Simple,
+        Complex
+    }
+    public enum QFMethod
+    {
+        NewtonCotes,
+        Gauss
+    }
 }

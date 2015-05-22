@@ -14,9 +14,9 @@ namespace GaussianQF
             }
             return result;
         }
-        public static double[] RootsFinding(double[] polynomial, double a, double b, int maxIteration, double tolerance)
+        public static double[] RootsFinding(double[] polynomial, double a, double b, int maxIteration = 1000, double tolerance = 1E-15)
         {
-            if(polynomial.Length == 4)
+            if (polynomial.Length == 4)
             {
                 var f = polynomial.Reverse().ToArray();
                 double Q = (f[1] * f[1] - 3 * f[2]) / 9;
@@ -28,7 +28,7 @@ namespace GaussianQF
                 -2 * Math.Pow(Q,0.5) * Math.Cos(A+2.0/3*Math.PI) - f[1] / 3,
                 -2 * Math.Pow(Q,0.5) * Math.Cos(A-2.0/3*Math.PI) - f[1] / 3};
             }
-            var roots = new double[polynomial.Length-1];
+            var roots = new double[polynomial.Length - 1];
 
             int n = 50;
             while (n < maxIteration)
@@ -44,7 +44,7 @@ namespace GaussianQF
                     {
                         roots[nextRoot] = left;
                         nextRoot++;
-                        if (nextRoot == (polynomial.Length - 1)) return FindRoot(polynomial,roots,h, tolerance);
+                        if (nextRoot == (polynomial.Length - 1)) return FindRoot(polynomial, roots, h, tolerance);
                     }
                 }
                 n *= 20;

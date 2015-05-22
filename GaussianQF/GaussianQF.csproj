@@ -41,10 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GaussianQuadratureFormulas.cs" />
+    <Compile Include="QuadratureFormulas.cs" />
     <Compile Include="Infrastructure.cs" />
     <Compile Include="IQuadratureFormula.cs" />
-    <Compile Include="NewtonCotesFormulas.cs" />
     <Compile Include="Poly.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

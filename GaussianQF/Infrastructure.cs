@@ -28,7 +28,8 @@ namespace GaussianQF
                 Console.Write("{0} ", mi);
             }
             int parts = qf.Parts;
-            int m = (int)Math.Ceiling(mi);
+            //int m = (int)Math.Ceiling(mi);
+            double m = mi;
             Console.WriteLine("\n\nПараметр m={0}, количество интервалов разбиения={1}\n", m, parts);
 
             var integrals = new double[maxr + 2];
@@ -166,9 +167,5 @@ namespace GaussianQF
             return x;
         }
     }
-    public enum QFType
-    {
-        Simple,
-        Complex
-    }
+
 }
